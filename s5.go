@@ -13,7 +13,6 @@ import (
 type config struct {
 	Host  string `default:"0.0.0.0"`
 	Port  int    `default:"1080"`
-	Users socks5.StaticCredentials
 }
 
 func main() {
@@ -25,11 +24,7 @@ func main() {
 		log.Fatalf("Failed to read ENV: %s\n", err.Error())
 	}
 
-	if len(cfg.Users) < 1 {
-		log.Fatal("No user credentials specified in USERS environment variable")
-	}
-
-	auth := socks5.UserPassAuthenticator{Credentials: cfg.Users}
+	auth := socks5.NoAuthAuthenticator{}
 
 	log.Println("Configuration..")
 	srvConfig := &socks5.Config{
